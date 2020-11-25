@@ -19,6 +19,7 @@ def get_password(server, user='root'):
     """
     Gets the text inside the file of user@server
     """
+    git_pull()
     with open(os.path.join(PASSWORD_DIR, server, user, 'password'), 'r') as f:
         password = f.readline().strip()
     
@@ -47,17 +48,14 @@ def git_add_commit_push(filepath):
     print('about to do git stuff')
     repo.git.add(os.path.join(ROOT_DIR, filepath))
     #TODO better commit messages
-    repo.index.commit('Changing the password to {}'.format(filepath))
+    repo.index.commit('Changing the password to {}'.format(
+        os.path.join(ROOT_DIR, filepath)))
     origin = repo.remote(name='origin')
     origin.push()
 
 if __name__ == '__main__':
     # Parse the arguments, and run
     # TODO add a git pull here
-    get_password(server='lurch')
-    add_password(server='lurch')
-    get_password(server='lurch')
-    
-    add_password(server='new_eas_git')
-    get_password(server='new_eas_git')
+    add_password(server='harrier', password='lucko')
+    get_password(server='harrier')
 
