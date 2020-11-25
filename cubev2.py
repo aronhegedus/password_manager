@@ -6,7 +6,7 @@ ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 PASSWORD_DIR = os.path.join(ROOT_DIR, 'passwords')
 
-repo = git.Repo(os.path.join(ROOT_DIR, '/.git')
+repo = git.Repo(os.path.join(ROOT_DIR, '.git'))
 
 def git_pull():
     """
@@ -37,7 +37,7 @@ def add_password(server, user='root', password='1234'):
     with open(os.path.join(PASSWORD_DIR, server, user, 'password'), 'w') as f:
         f.write(password)
     print('Changed the password to ', server)
-    git_add_commit_push(os.path.join(PASSWORD_DIR, server, user, 'password'))
+    git_add_commit_push(os.path.join('passwords', server, user, 'password'))
     # TODO add git commit and git push
 
 def git_add_commit_push(filepath):
@@ -45,7 +45,7 @@ def git_add_commit_push(filepath):
     pushing a file
     """
     print('about to do git stuff')
-    repo.git.add(os.path.join(ROT_DIR, filepath))
+    repo.git.add(os.path.join(ROOT_DIR, filepath))
     #TODO better commit messages
     repo.index.commit('Changing the password to {}'.format(filepath))
     origin = repo.remote(name='origin')
@@ -58,6 +58,6 @@ if __name__ == '__main__':
     add_password(server='lurch')
     get_password(server='lurch')
     
-    add_password(server='new_eas')
-    get_password(server='new_eas')
+    add_password(server='new_eas_git')
+    get_password(server='new_eas_git')
 
