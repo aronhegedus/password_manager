@@ -1,4 +1,3 @@
-import subprocess
 import os
 import git
 
@@ -23,11 +22,11 @@ def get_password(server, user='root'):
     with open(os.path.join(PASSWORD_DIR, server, user, 'password'), 'r') as f:
         password = f.readline().strip()
     
-    print(password, 'is password')
+    print(password, 'is password', 'for {}@{}'.format(user, server))
 
 def add_password(server, user='root', password='1234'):
     """
-    Change the password for something
+    Change the stored password for user@server
     """
     password_folder = os.path.join(PASSWORD_DIR, server, user)
     try:
@@ -39,7 +38,6 @@ def add_password(server, user='root', password='1234'):
         f.write(password)
     print('Changed the password to ', server)
     git_add_commit_push(os.path.join('passwords', server, user, 'password'))
-    # TODO add git commit and git push
 
 def git_add_commit_push(filepath):
     """
@@ -47,15 +45,12 @@ def git_add_commit_push(filepath):
     """
     print('about to do git stuff')
     repo.git.add(os.path.join(ROOT_DIR, filepath))
-    #TODO better commit messages
-    repo.index.commit('Changing the password to {}'.format(
-        os.path.join(ROOT_DIR, filepath)))
+    repo.index.commit('Changing the password to {}'.format(filepath))
     origin = repo.remote(name='origin')
     origin.push()
 
 if __name__ == '__main__':
-    # Parse the arguments, and run
-    # TODO add a git pull here
-    add_password(server='harrier', password='lucko')
+    # TODO parse the arguments rather than hardcore here
+    #add_password(server='harrier', password='lucko')
     get_password(server='harrier')
 
